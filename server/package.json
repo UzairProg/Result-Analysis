@@ -1,0 +1,14 @@
+{
+  "name": "result-management-server",
+  "version": "1.0.0",
+  "description": "CSE Department Result Analysis and Management System - Backend API",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": ["result-management", "mern", "cse"],
+  "author": "",
+  "license": "ISC"
+}
