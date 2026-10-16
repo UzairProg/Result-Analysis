@@ -105,7 +105,7 @@ export default function StudentDashboard() {
         <main className="page-content">
           <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 12 }}>
             <div>
-              <h2 className="page-title">Welcome, {user?.name?.split(' ')[0]} 🎓</h2>
+              <h2 className="page-title">Welcome, {user?.name?.split(' ')[0]}</h2>
               <p className="page-subtitle">PRN: {user?.identifier || '—'} · {user?.department} · Semester {user?.currentSemester || '—'}</p>
             </div>
             <button className="btn btn-secondary" onClick={downloadPDF}>
@@ -182,6 +182,7 @@ export default function StudentDashboard() {
                           <th style={{ textAlign: 'center' }}>CA1 /10</th>
                           <th style={{ textAlign: 'center' }}>MSE /20</th>
                           <th style={{ textAlign: 'center' }}>CA2 /10</th>
+                          <th style={{ textAlign: 'center' }}>Internals /40</th>
                           <th style={{ textAlign: 'center' }}>EndSem /60</th>
                           <th style={{ textAlign: 'center' }}>Total /100</th>
                           <th style={{ textAlign: 'center' }}>Grade</th>
@@ -194,11 +195,16 @@ export default function StudentDashboard() {
                           <tr key={r._id}>
                             <td style={{ fontWeight: 500 }}>{r.subjectId?.subjectName || '—'}</td>
                             <td><span className="badge badge-neutral">{r.subjectId?.subjectCode || '—'}</span></td>
-                            <td style={{ textAlign: 'center', color: r.status === 'In-Progress' ? 'var(--text-tertiary)' : 'inherit' }}>{r.status === 'In-Progress' && r.ca1 === null ? '—' : r.ca1}</td>
-                            <td style={{ textAlign: 'center', color: r.status === 'In-Progress' ? 'var(--text-tertiary)' : 'inherit' }}>{r.status === 'In-Progress' && r.mse === null ? '—' : r.mse}</td>
-                            <td style={{ textAlign: 'center', color: r.status === 'In-Progress' ? 'var(--text-tertiary)' : 'inherit' }}>{r.status === 'In-Progress' && r.ca2 === null ? '—' : r.ca2}</td>
-                            <td style={{ textAlign: 'center', color: r.status === 'In-Progress' ? 'var(--text-tertiary)' : 'inherit' }}>
-                              <span style={{ fontWeight: 600, color: r.endSem !== null && r.endSem < 20 ? 'var(--danger)' : 'inherit' }}>{r.status === 'In-Progress' && r.endSem === null ? '—' : r.endSem}</span>
+                            <td style={{ textAlign: 'center', color: r.status === 'In-Progress' && r.ca1 === null ? 'var(--text-tertiary)' : 'inherit' }}>{r.ca1 === null ? '—' : r.ca1}</td>
+                            <td style={{ textAlign: 'center', color: r.status === 'In-Progress' && r.mse === null ? 'var(--text-tertiary)' : 'inherit' }}>{r.mse === null ? '—' : r.mse}</td>
+                            <td style={{ textAlign: 'center', color: r.status === 'In-Progress' && r.ca2 === null ? 'var(--text-tertiary)' : 'inherit' }}>{r.ca2 === null ? '—' : r.ca2}</td>
+                            <td style={{ textAlign: 'center' }}>
+                              <span style={{ fontWeight: 700, color: (r.internalTotal || 0) < 20 && (r.ca1 !== null || r.mse !== null || r.ca2 !== null) ? 'var(--danger)' : '#2563eb' }}>
+                                {(r.ca1 !== null || r.mse !== null || r.ca2 !== null) ? (r.internalTotal ?? 0) : '—'}
+                              </span>
+                            </td>
+                            <td style={{ textAlign: 'center', color: r.status === 'In-Progress' && r.endSem === null ? 'var(--text-tertiary)' : 'inherit' }}>
+                              <span style={{ fontWeight: 600, color: r.endSem !== null && r.endSem < 20 ? 'var(--danger)' : 'inherit' }}>{r.endSem === null ? '—' : r.endSem}</span>
                             </td>
                             <td style={{ textAlign: 'center', fontWeight: 700, color: r.status === 'In-Progress' && r.totalMarks === 0 ? 'var(--text-tertiary)' : 'inherit' }}>{r.totalMarks}</td>
                             <td style={{ textAlign: 'center' }}>

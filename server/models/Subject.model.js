@@ -36,6 +36,13 @@ const subjectSchema = new mongoose.Schema(
       ref: 'User',
       default: null,
     },
+    // Assessment paper configuration (default max marks)
+    assessmentConfig: {
+      ca1Max: { type: Number, default: 20, min: 1 },
+      mseMax: { type: Number, default: 20, min: 1 },
+      ca2Max: { type: Number, default: 20, min: 1 },
+      endSemMax: { type: Number, default: 60, min: 1 },
+    },
     isActive: {
       type: Boolean,
       default: true,

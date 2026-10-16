@@ -44,6 +44,7 @@ export const createSubjectApi = (data) => API.post('/subjects', data);
 export const updateSubjectApi = (id, data) => API.put(`/subjects/${id}`, data);
 export const deleteSubjectApi = (id) => API.delete(`/subjects/${id}`);
 export const getProfessorSubjectsApi = () => API.get('/subjects/professor/my-subjects');
+export const updateAssessmentConfigApi = (id, data) => API.put(`/subjects/${id}/assessment-config`, data);
 
 // Results
 export const upsertResultApi = (data) => API.post('/results', data);

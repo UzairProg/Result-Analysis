@@ -2,14 +2,14 @@ import { useState, useEffect } from 'react';
 import { Sidebar, Topbar } from '../../components/Layout';
 import { useAuth } from '../../context/AuthContext';
 import { getProfessorSubjectsApi, getClassResultsApi } from '../../api/api';
-import { BookOpen, Users, ClipboardList, BarChart3 } from 'lucide-react';
+import { BookOpen, Users, ClipboardList, BarChart3, Award } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Legend } from 'recharts';
 
 const StatMini = ({ label, value, color }) => (
-  <div style={{ background: 'var(--surface)', borderRadius: 10, padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 4 }}>
-    <span style={{ fontSize: '1.375rem', fontWeight: 700, color: color || 'var(--text-primary)' }}>{value}</span>
-    <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 500 }}>{label}</span>
+  <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 8, padding: '10px 14px', display: 'flex', flexDirection: 'column', gap: 2 }}>
+    <span style={{ fontSize: '1.25rem', fontWeight: 700, color: color || 'var(--text-primary)', fontFamily: 'var(--font-heading)' }}>{value}</span>
+    <span style={{ fontSize: '0.6875rem', color: 'var(--text-tertiary)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{label}</span>
   </div>
 );
 
@@ -49,8 +49,8 @@ export default function ProfessorDashboard() {
         <Topbar title="Professor Dashboard" subtitle={`${user?.department} Department`} />
         <main className="page-content">
           <div className="page-header">
-            <h2 className="page-title">Welcome, Prof. {user?.name?.split(' ')[0]} 👨‍🏫</h2>
-            <p className="page-subtitle">Manage marks and track your class performance below.</p>
+            <h2 className="page-title">Welcome, {user?.name}</h2>
+            <p className="page-subtitle">Assigned curriculum subjects and evaluation overview.</p>
           </div>
 
           {loading ? (
@@ -68,28 +68,39 @@ export default function ProfessorDashboard() {
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-3 stagger" style={{ gap: 16, marginBottom: 24 }}>
+              <div className="grid grid-cols-3 stagger" style={{ gap: 18, marginBottom: 26 }}>
                 <div className="stat-card">
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <div className="stat-icon" style={{ background: '#e8f0fe' }}><BookOpen size={20} color="#1a73e8" /></div>
-                    <div><div className="stat-value">{subjects.length}</div><div className="stat-label">Assigned Subjects</div></div>
-                  </div>
-                </div>
-                <div className="stat-card">
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <div className="stat-icon" style={{ background: '#e6f4ea' }}><Users size={20} color="#1e8e3e" /></div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                    <div style={{ width: 46, height: 46, borderRadius: 12, background: 'linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#2563eb', border: '1px solid #bfdbfe', flexShrink: 0 }}>
+                      <BookOpen size={22} />
+                    </div>
                     <div>
-                      <div className="stat-value">{Object.values(subjectAnalytics).reduce((a, v) => a + (v?.totalStudents || 0), 0)}</div>
-                      <div className="stat-label">Total Students</div>
+                      <div className="stat-value">{subjects.length}</div>
+                      <div className="stat-label">Assigned Subjects</div>
                     </div>
                   </div>
                 </div>
+
                 <div className="stat-card">
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <div className="stat-icon" style={{ background: '#fef0e6' }}><BarChart3 size={20} color="#e8710a" /></div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                    <div style={{ width: 46, height: 46, borderRadius: 12, background: 'linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#059669', border: '1px solid #a7f3d0', flexShrink: 0 }}>
+                      <Users size={22} />
+                    </div>
+                    <div>
+                      <div className="stat-value">{Object.values(subjectAnalytics).reduce((a, v) => a + (v?.totalStudents || 0), 0)}</div>
+                      <div className="stat-label">Enrolled Students</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="stat-card">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                    <div style={{ width: 46, height: 46, borderRadius: 12, background: 'linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#d97706', border: '1px solid #fde68a', flexShrink: 0 }}>
+                      <BarChart3 size={22} />
+                    </div>
                     <div>
                       <div className="stat-value">{(() => { const vals = Object.values(subjectAnalytics).filter(Boolean); if (!vals.length) return '—'; return (vals.reduce((a, v) => a + (v.classAverage || 0), 0) / vals.length).toFixed(1); })()}</div>
-                      <div className="stat-label">Avg Class Score</div>
+                      <div className="stat-label">Dept Class Average</div>
                     </div>
                   </div>
                 </div>
@@ -164,9 +175,12 @@ export default function ProfessorDashboard() {
                                 <span className="badge badge-neutral">{sub.credits} Credits</span>
                               </div>
                             </div>
-                            <div style={{ display: 'flex', gap: 8 }}>
-                              <button className="btn btn-secondary btn-sm" onClick={() => navigate('/professor/marks', { state: { subjectId: sub._id } })}>
-                                <ClipboardList size={14} /> Enter Marks
+                            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                              <button className="btn btn-secondary btn-sm" onClick={() => navigate('/professor/internals', { state: { subjectId: sub._id } })}>
+                                <ClipboardList size={14} /> Internals (40)
+                              </button>
+                              <button className="btn btn-secondary btn-sm" onClick={() => navigate('/professor/external', { state: { subjectId: sub._id } })}>
+                                <Award size={14} /> External (60)
                               </button>
                               <button className="btn btn-primary btn-sm" onClick={() => navigate('/professor/analysis', { state: { subjectId: sub._id } })}>
                                 <BarChart3 size={14} /> Analysis

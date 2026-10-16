@@ -13,7 +13,8 @@ import ResultsOverview from './pages/admin/ResultsOverview';
 
 // Professor
 import ProfessorDashboard from './pages/professor/ProfessorDashboard';
-import MarksEntry from './pages/professor/MarksEntry';
+import InternalMarksEntry from './pages/professor/InternalMarksEntry';
+import ExternalMarksEntry from './pages/professor/ExternalMarksEntry';
 import ClassAnalysis from './pages/professor/ClassAnalysis';
 
 // Student
@@ -38,7 +39,9 @@ export default function App() {
 
           {/* Professor Routes */}
           <Route path="/professor" element={<ProtectedRoute allowedRoles={['Professor']}><ProfessorDashboard /></ProtectedRoute>} />
-          <Route path="/professor/marks" element={<ProtectedRoute allowedRoles={['Professor']}><MarksEntry /></ProtectedRoute>} />
+          <Route path="/professor/internals" element={<ProtectedRoute allowedRoles={['Professor']}><InternalMarksEntry /></ProtectedRoute>} />
+          <Route path="/professor/external" element={<ProtectedRoute allowedRoles={['Professor']}><ExternalMarksEntry /></ProtectedRoute>} />
+          <Route path="/professor/marks" element={<Navigate to="/professor/internals" replace />} />
           <Route path="/professor/analysis" element={<ProtectedRoute allowedRoles={['Professor']}><ClassAnalysis /></ProtectedRoute>} />
 
           {/* Student Routes */}

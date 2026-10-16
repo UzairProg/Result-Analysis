@@ -449,7 +449,7 @@ export default function MarksEntry() {
             <>
               <div style={{ padding: '12px 16px', background: '#e8f0fe', borderRadius: 10, border: '1px solid #c5d8fb', marginBottom: 16 }}>
                 <p style={{ margin: 0, fontSize: '0.8125rem', color: '#1a73e8', fontWeight: 500 }}>
-                  📋 Editing {data.length} students. Invalid values are highlighted in red.
+                  Editing {data.length} students. Invalid values are highlighted in red.
                 </p>
                 <div style={{ display: 'flex', gap: 16, marginTop: 8 }}>
                   <span style={{ fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: 4 }}>

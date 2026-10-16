@@ -77,8 +77,8 @@ export default function AdminDashboard() {
           <div className="page-header stagger">
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
               <div>
-                <h2 className="page-title">{greeting()}, {user?.name?.split(' ')[0]} 👋</h2>
-                <p className="page-subtitle">Here's an overview of your department's academic performance.</p>
+                <h2 className="page-title">{greeting()}, {user?.name?.split(' ')[0]}</h2>
+                <p className="page-subtitle">Department academic overview and evaluation metrics.</p>
               </div>
               <div style={{ display: 'flex', gap: 8 }}>
                 <span className="badge badge-primary">AY 2025-26</span>

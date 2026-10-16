@@ -120,3 +120,32 @@ export const getProfessorSubjects = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+/**
+ * PUT /api/subjects/:id/assessment-config
+ * Professor/Admin: Update max marks configuration for CA1, MSE, CA2, EndSem
+ */
+export const updateAssessmentConfig = async (req, res) => {
+  try {
+    const { ca1Max, mseMax, ca2Max, endSemMax } = req.body;
+    const subject = await Subject.findById(req.params.id);
+
+    if (!subject) return res.status(404).json({ success: false, message: 'Subject not found.' });
+
+    if (req.user.role === 'Professor' && String(subject.assignedProfessor) !== String(req.user._id)) {
+      return res.status(403).json({ success: false, message: 'You are not assigned to this subject.' });
+    }
+
+    subject.assessmentConfig = {
+      ca1Max: Number(ca1Max) > 0 ? Number(ca1Max) : subject.assessmentConfig?.ca1Max || 20,
+      mseMax: Number(mseMax) > 0 ? Number(mseMax) : subject.assessmentConfig?.mseMax || 20,
+      ca2Max: Number(ca2Max) > 0 ? Number(ca2Max) : subject.assessmentConfig?.ca2Max || 20,
+      endSemMax: Number(endSemMax) > 0 ? Number(endSemMax) : subject.assessmentConfig?.endSemMax || 60,
+    };
+
+    await subject.save();
+    res.json({ success: true, message: 'Assessment configuration updated.', subject });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
